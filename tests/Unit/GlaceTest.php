@@ -1,10 +1,25 @@
 <?php
 
+declare(strict_types = 1);
+
+use App\Entity\Glace;
+use App\Entity\Saveur;
+use App\Enum\ContenantEnum;
+use App\Exception\NoNegativeValueGlaceException;
+use App\Exception\NoUniqueIdentifiantGlaceException;
+use App\Repository\GlaceRepo;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class GlaceTest extends TestCase
 {
+    private GlaceRepo $glaceRepo;
+
+    protected function setUp(): void
+    {
+        $this->glaceRepo = new GlaceRepo();
+    }
+
     public static function todayPlusOneDay(): DateTime {
         $date = new DateTime();
         $date->modify('+1 day');
@@ -21,14 +36,16 @@ class GlaceTest extends TestCase
         $saveur = new Saveur("chocolat");
 
         $glace1 = new Glace("chocolat", 1200, ContenantEnum::CORNET, 200, 500, $date, $saveur);
+        $this->glaceRepo->add($glace1);
         $glace2 = new Glace("chocolat", 1200, ContenantEnum::CORNET, 200, 500, $date, $saveur);
+        $this->glaceRepo->add($glace2);
     }
 
     public static function notGoodIdentifiantValue(){
         return [
-            1234,
-            false,
-            null
+            [1234],
+            [false],
+            [null]
         ];
     }
 
@@ -52,7 +69,7 @@ class GlaceTest extends TestCase
 
         $this->expectException(TypeError::class);
 
-        new Glace("chocolat", "1542", ContenantEnum::CORNET, 200, 500, $date, $saveur);
+        new Glace("chocolat", "10234", ContenantEnum::CORNET, 200, 500, $date, $saveur);
     }
 
     public function testNegativeTempsFabrication(){
@@ -86,5 +103,14 @@ class GlaceTest extends TestCase
         $this->expectException(NoNegativeValueGlaceException::class);
 
         new Glace("chocolat", 12, ContenantEnum::CORNET, 200, -500, $date, $saveur);
+    }
+
+    public function testDatePeremptionVente(){
+
+        $saveur = new Saveur("chocolat");
+
+        $this->expectException(TypeError::class);
+
+        new Glace("chocolat", 12, ContenantEnum::CORNET, 200, -500, "zeasq", $saveur);
     }
 }
