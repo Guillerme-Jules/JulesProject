@@ -92,12 +92,21 @@ class GlaceTest extends TestCase
         new Glace("chocolat", 12, ContenantEnum::CORNET, 1000, 500, $date, $saveur);
     }
 
-    public function testDatePeremptionVente(){
+    public function testDatePeremption(){
 
         $saveur = new Saveur("chocolat");
 
         $this->expectException(TypeError::class);
 
-        new Glace("chocolat", 12, ContenantEnum::CORNET, 200, -500, "zeasq", $saveur);
+        new Glace("chocolat", 12, ContenantEnum::CORNET, 200, 500, "zeasq", $saveur);
+    }
+
+    public function testSaveur(){
+
+        $date = $this->todayPlusOneDay();
+
+        $this->expectException(TypeError::class);
+
+        new Glace("chocolat", 12, ContenantEnum::CORNET, 200, 500, $date, "adzdqd");
     }
 }
