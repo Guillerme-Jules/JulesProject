@@ -25,30 +25,58 @@ class Glace
         DateTime $datePeremption,
         Saveur $saveur
     ) {
-        $this->identifiant      = $identifiant;
-        if ($tempsFabrication < 0) {
+        $this->setIdentifiant($identifiant);
+        $this->setTempsFabrication($tempsFabrication);
+        $this->setContenant($contenant);
+        $this->setPrixAchat($prixAchat);
+        $this->setPrixVente($prixVente);
+        $this->setDatePeremption($datePeremption);
+        $this->setSaveur($saveur);
+    }
+
+    public function setIdentifiant(string $identifiant): void
+    {
+        $this->identifiant = $identifiant;
+    }
+
+    public function setTempsFabrication(int $tempsFabrication): void
+    {
+        if ($tempsFabrication <= 0) {
             throw new NoNegativeValueGlaceException("Le temps de fabrication ne peux pas être négative");
         }
         $this->tempsFabrication = $tempsFabrication;
+    }
 
-        $this->contenant        = $contenant;
-        if ($prixAchat < 0) {
+    public function setContenant(ContenantEnum $contenant): void
+    {
+        $this->contenant = $contenant;
+    }
+
+    public function setPrixAchat(int $prixAchat): void
+    {
+        if ($prixAchat <= 0) {
             throw new NoNegativeValueGlaceException("Le prix d'achat ne peux pas être négative");
         }
-        $this->prixAchat        = $prixAchat;
+        $this->prixAchat = $prixAchat;
+    }
 
-        if ($prixVente < 0) {
+    public function setPrixVente(int $prixVente): void
+    {
+        if ($prixVente <= 0) {
             throw new NoNegativeValueGlaceException("Le prix de vente ne peux pas être négative");
         }
-
-        $this->prixVente        = $prixVente;
-
-        $this->datePeremption   = $datePeremption;
-        $this->saveur           = $saveur;
+        $this->prixVente = $prixVente;
     }
 
-    public function getIdentifiant(): string
+    public function setDatePeremption(DateTime $datePeremption): void
     {
-        return $this->identifiant;
+        $this->datePeremption = $datePeremption;
     }
+
+    public function setSaveur(Saveur $saveur): void
+    {
+        $this->saveur = $saveur;
+    }
+
+
 }

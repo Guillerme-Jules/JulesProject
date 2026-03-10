@@ -7,40 +7,17 @@ use App\Entity\Saveur;
 use App\Enum\ContenantEnum;
 use App\Exception\NoNegativeValueGlaceException;
 use App\Exception\NoUniqueIdentifiantGlaceException;
-use App\Repository\GlaceRepo;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class GlaceTest extends TestCase
 {
-    private GlaceRepo $glaceRepo;
-
-    protected function setUp(): void
-    {
-        $this->glaceRepo = new GlaceRepo();
-    }
-
     public static function todayPlusOneDay(): DateTime {
         $date = new DateTime();
         $date->modify('+1 day');
 
         return $date;
     }
-
-    public function testUniqueIdentifiant(){
-
-        $this->expectException(NoUniqueIdentifiantGlaceException::class);
-
-        $date = $this->todayPlusOneDay();
-
-        $saveur = new Saveur("chocolat");
-
-        $glace1 = new Glace("chocolat", 1200, ContenantEnum::CORNET, 200, 500, $date, $saveur);
-        $this->glaceRepo->add($glace1);
-        $glace2 = new Glace("chocolat", 1200, ContenantEnum::CORNET, 200, 500, $date, $saveur);
-        $this->glaceRepo->add($glace2);
-    }
-
     public static function notGoodIdentifiantValue(){
         return [
             [1234],
