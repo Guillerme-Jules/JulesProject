@@ -35,12 +35,12 @@ class Glace
         $this->setSaveur($saveur);
     }
 
-    public function setIdentifiant(string $identifiant): void
+    private function setIdentifiant(string $identifiant): void
     {
         $this->identifiant = $identifiant;
     }
 
-    public function setTempsFabrication(int $tempsFabrication): void
+    private function setTempsFabrication(int $tempsFabrication): void
     {
         if ($tempsFabrication <= 0) {
             throw new NoNegativeValueGlaceException("Le temps de fabrication ne peux pas être négative");
@@ -48,12 +48,12 @@ class Glace
         $this->tempsFabrication = $tempsFabrication;
     }
 
-    public function setContenant(ContenantEnum $contenant): void
+    private function setContenant(ContenantEnum $contenant): void
     {
         $this->contenant = $contenant;
     }
 
-    public function setPrixAchat(int $prixAchat): void
+    private function setPrixAchat(int $prixAchat): void
     {
         if ($prixAchat <= 0) {
             throw new NoNegativeValueGlaceException("Le prix d'achat ne peux pas être négative");
@@ -64,7 +64,7 @@ class Glace
         $this->prixAchat = $prixAchat;
     }
 
-    public function setPrixVente(int $prixVente): void
+    private function setPrixVente(int $prixVente): void
     {
         if ($prixVente <= 0) {
             throw new NoNegativeValueGlaceException("Le prix de vente ne peux pas être négative");
@@ -75,12 +75,12 @@ class Glace
         $this->prixVente = $prixVente;
     }
 
-    public function setDatePeremption(DateTime $datePeremption): void
+    private function setDatePeremption(DateTime $datePeremption): void
     {
         $this->datePeremption = $datePeremption;
     }
 
-    public function setSaveur(Saveur $saveur): void
+    private function setSaveur(Saveur $saveur): void
     {
         $this->saveur = $saveur;
     }
