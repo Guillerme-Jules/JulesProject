@@ -29,7 +29,6 @@ class Glace
         $this->setIdentifiant($identifiant);
         $this->setTempsFabrication($tempsFabrication);
         $this->setContenant($contenant);
-        $this->verifierPrix($prixAchat, $prixVente);
         $this->setPrixAchat($prixAchat);
         $this->setPrixVente($prixVente);
         $this->setDatePeremption($datePeremption);
@@ -59,6 +58,9 @@ class Glace
         if ($prixAchat <= 0) {
             throw new NoNegativeValueGlaceException("Le prix d'achat ne peux pas être négative");
         }
+        if (isset($this->prixVente) && $this->prixVente < $prixAchat) {
+            throw new PrixAchatSupPrixVenteException();
+        }
         $this->prixAchat = $prixAchat;
     }
 
@@ -66,6 +68,9 @@ class Glace
     {
         if ($prixVente <= 0) {
             throw new NoNegativeValueGlaceException("Le prix de vente ne peux pas être négative");
+        }
+        if (isset($this->prixAchat) && $prixVente < $this->prixAchat) {
+            throw new PrixAchatSupPrixVenteException();
         }
         $this->prixVente = $prixVente;
     }
@@ -79,13 +84,4 @@ class Glace
     {
         $this->saveur = $saveur;
     }
-
-    private function verifierPrix(int $prixAchat, int $prixVente)
-    {
-        if ($prixAchat > $prixVente) {
-            throw new PrixAchatSupPrixVenteException();
-        }
-    }
-
-
 }
