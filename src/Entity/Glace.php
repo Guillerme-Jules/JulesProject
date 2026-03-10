@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Enum\ContenantEnum;
 use App\Exception\NoNegativeValueGlaceException;
+use App\Exception\PrixAchatSupPrixVenteException;
 use DateTime;
 
 class Glace
@@ -28,6 +29,7 @@ class Glace
         $this->setIdentifiant($identifiant);
         $this->setTempsFabrication($tempsFabrication);
         $this->setContenant($contenant);
+        $this->verifierPrix($prixAchat, $prixVente);
         $this->setPrixAchat($prixAchat);
         $this->setPrixVente($prixVente);
         $this->setDatePeremption($datePeremption);
@@ -76,6 +78,13 @@ class Glace
     public function setSaveur(Saveur $saveur): void
     {
         $this->saveur = $saveur;
+    }
+
+    private function verifierPrix(int $prixAchat, int $prixVente)
+    {
+        if ($prixAchat > $prixVente) {
+            throw new PrixAchatSupPrixVenteException();
+        }
     }
 
 

@@ -7,6 +7,7 @@ use App\Entity\Saveur;
 use App\Enum\ContenantEnum;
 use App\Exception\NoNegativeValueGlaceException;
 use App\Exception\NoUniqueIdentifiantGlaceException;
+use App\Exception\PrixAchatSupPrixVenteException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -80,6 +81,15 @@ class GlaceTest extends TestCase
         $this->expectException(NoNegativeValueGlaceException::class);
 
         new Glace("chocolat", 12, ContenantEnum::CORNET, 200, -500, $date, $saveur);
+    }
+
+    public function testPrixAchatInfPrixVente(){
+
+        $date = $this->todayPlusOneDay();
+        $saveur = new Saveur("chocolat");
+
+        $this->expectException(PrixAchatSupPrixVenteException::class);
+        new Glace("chocolat", 12, ContenantEnum::CORNET, 1000, 500, $date, $saveur);
     }
 
     public function testDatePeremptionVente(){
